@@ -33,7 +33,7 @@ export const Header = () => {
           <nav className="flex items-center gap-6">
             {/* Render nav items - decide if they show always or only when signed in */}
             {/* For this app, let's show them always */}
-            {navItems.map((item) => (
+            {navItems.map((item, index) => (
               <motion.div key={item.href} /* ... */ >
                 <Link href={item.href} className={`... ${pathname === item.href ? "..." : "..."}`} >
                   {item.name}
