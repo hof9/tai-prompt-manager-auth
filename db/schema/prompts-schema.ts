@@ -11,6 +11,9 @@ import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
  */
 export const prompts = pgTable("prompts", {
   id: serial("id").primaryKey(),
+    // Add the user_id column
+  // Clerk user IDs are strings, and every prompt MUST belong to a user
+  user_id: text("user_id").notNull(),
   name: text("name").notNull(),
   description: text("description").notNull(),
   content: text("content").notNull(),
@@ -20,3 +23,6 @@ export const prompts = pgTable("prompts", {
     .notNull()
     .$onUpdate(() => new Date())
 });
+
+export type InsertPrompt = typeof prompts.$inferInsert;
+export type SelectPrompt = typeof prompts.$inferSelect;

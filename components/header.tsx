@@ -1,59 +1,62 @@
+// components/header.tsx
 "use client";
 
+// Import Clerk components
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button"; // Ensure Button is imported
 import { motion } from "framer-motion";
 import { BookMarked } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const Header = () => {
-  // Get current pathname for active link styling
   const pathname = usePathname();
 
-  // Navigation items
   const navItems = [
-    {
-      name: "Home",
-      href: "/"
-    },
-    {
-      name: "Prompts",
-      href: "/prompts"
-    }
+    { name: "Home", href: "/" },
+    { name: "Prompts", href: "/prompts" },
   ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and site name */}
-          <motion.div
-            className="flex items-center gap-2"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          {/* Logo Section (remains the same) */}
+          <motion.div /* ... */ >
             <BookMarked className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            <span className="text-lg font-semibold text-gray-900 dark:text-white">Prompt Manager</span>
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              Prompt Manager
+            </span>
           </motion.div>
 
-          {/* Navigation */}
+          {/* Navigation & Auth Section */}
           <nav className="flex items-center gap-6">
-            {navItems.map((item, index) => (
-              <motion.div
-                key={item.href}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Link
-                  href={item.href}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 dark:hover:text-blue-400
-                    ${pathname === item.href ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-300"}`}
-                >
+            {/* Render nav items - decide if they show always or only when signed in */}
+            {/* For this app, let's show them always */}
+            {navItems.map((item) => (
+              <motion.div key={item.href} /* ... */ >
+                <Link href={item.href} className={`... ${pathname === item.href ? "..." : "..."}`} >
                   {item.name}
                 </Link>
               </motion.div>
             ))}
+
+            {/* --- Clerk Auth Components --- */}
+            {/* Content shown only when the user IS signed in */}
+            <SignedIn>
+              <UserButton /> {/* Clerk's user profile button */}
+            </SignedIn>
+
+            {/* Content shown only when the user IS NOT signed in */}
+            <SignedOut>
+              {/* SignInButton wraps our custom button, making it trigger the sign-in flow */}
+              <SignInButton mode="modal">
+                {/* You can style this button however you like */}
+                <Button>Sign in</Button>
+              </SignInButton>
+            </SignedOut>
+            {/* --- End Clerk Auth Components --- */}
+
           </nav>
         </div>
       </div>
