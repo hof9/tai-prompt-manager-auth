@@ -12,7 +12,7 @@ This project is a prompt manager where I store all my favorite prompts for easy 
 
 Frontend: Next.js, Tailwind, Shadcn, Framer Motion
 Backend: PostgreSQL, Supabase, Drizzle
-
+Auth: Clerk # <-- Added Clerk here
 
 ## General Rules
 
@@ -39,5 +39,14 @@ Backend: PostgreSQL, Supabase, Drizzle
 
 ## Backend Rules
 
+- Do not edit migrations files. We use Drizzle to manage migrations automatically and never touch those files. # <-- Added this rule
 - Write db schemas as drizzle schemas in db/schema (Ex: db/schema/prompts-schema.ts)
 - Write db queries with drizzle as server actions in an actions folder at the root (Ex: actions/prompts-actions.ts)
+
+## Auth Rules # <-- Added this section
+
+- We use Clerk for user authentication.
+- Use Clerk middleware to protect routes.
+- Use Clerk components (`<UserButton>`, `<SignInButton>`, etc.) for UI elements.
+- Use Clerk server-side helpers (`auth()`) in Server Actions to get user ID.
+
